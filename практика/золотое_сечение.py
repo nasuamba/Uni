@@ -8,19 +8,44 @@ def golden_ratio(A, a, b, e):
     T = (3 - math.sqrt(5))/2
     x_1 = a + T*(b - a)
     x_2 = a + b - x_1
-    l = 2*e; i = 0
-    
+
+    # первая итерация
+    f_1 = func([1, 2, 2, 1], x_1)
+    f_2 = func([1, 2, 2, 1], x_2)
+    if f_1 <= f_2:
+        b = x_2
+        x_2 = x_1
+        x_1 = a + b - x_2
+    elif f_1 > f_2:
+        a = x_1
+        x_1 = x_2
+        x_2 = a + b - x_1
+    l = b - a
+    i = 1
+
     while l > e:
-        f_1 = func([1, 2, 2, 1], x_1)
-        f_2 = func([1, 2, 2, 1], x_2)
         if f_1 <= f_2:
-            b = x_2
-            x_2 = x_1
-            x_1 = a + b - x_2
+            f_2 = f_1
+            f_1 = func([1, 2, 2, 1], x_1)
+            if f_1 <= f_2:
+                b = x_2
+                x_2 = x_1
+                x_1 = a + b - x_2
+            elif f_1 > f_2:
+                a = x_1
+                x_1 = x_2
+                x_2 = a + b - x_1
         elif f_1 > f_2:
-            a = x_1
-            x_1 = x_2
-            x_2 = a + b - x_1
+            f_1 = f_2
+            f_2 = func([1, 2, 2, 1], x_2)
+            if f_1 <= f_2:
+                b = x_2
+                x_2 = x_1
+                x_1 = a + b - x_2
+            elif f_1 > f_2:
+                a = x_1
+                x_1 = x_2
+                x_2 = a + b - x_1
 
         l = b - a
         i += 1
@@ -30,4 +55,4 @@ def golden_ratio(A, a, b, e):
     print(f'(.) минимума: {x}\nминимальное значение функции: {f}\n\nбыло найдено за {i} итераций')
 
 
-golden_ratio([1, 2, 2, 1], -3, 2, 0.0001)
+golden_ratio([1, 2, 2, 1], -3, 2, 0.000001)
